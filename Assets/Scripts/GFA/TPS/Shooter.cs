@@ -9,7 +9,6 @@ namespace GFA.TPS
 {
     public class Shooter : MonoBehaviour
     {
-
         [SerializeField]
         private Weapon _weapon;
         
@@ -21,8 +20,45 @@ namespace GFA.TPS
         [SerializeField]
         private GameObject _defaultProjectilePrefab;
         
+        private WeaponGraphics _activeWeaponGraphics;
+
         [SerializeField]
-        private Transform _shootTransform;
+        private Transform _weaponContainer;
+
+
+        private void Start()
+        {
+            if (_weapon) CreateGraphics();
+        }
+
+        public void EquipWeapon(Weapon weapon)
+        {
+            if (_activeWeaponGraphics)
+            {
+                ClearGraphics();
+            }
+            _weapon = weapon;
+
+            if (!weapon)
+            {
+                CreateGraphics();
+            }
+        }
+
+        private void CreateGraphics()
+        {
+            if (!_weapon) return;
+            var instance = Instantiate(_weapon.WeaponGraphics, _weaponContainer);
+            instance.transform.localPosition = Vector3.zero;
+            _activeWeaponGraphics = instance;
+        }
+
+        private void ClearGraphics()
+        {
+            if (!_activeWeaponGraphics) return;
+            Destroy(_activeWeaponGraphics.gameObject);
+            _activeWeaponGraphics = null;
+        }
         
 
         public void Shoot()
@@ -38,7 +74,7 @@ namespace GFA.TPS
                 projectileToInstantiate = _weapon.ProjectilePrefab;
             }
 
-            var inst = Instantiate(projectileToInstantiate, _shootTransform.position, _shootTransform.rotation);
+            var inst = Instantiate(projectileToInstantiate, _activeWeaponGraphics.ShootTransform.position, _activeWeaponGraphics.ShootTransform.rotation);
 
             var rand = Random.value;
             var maxAngle = 30 - 30 * Mathf.Max(_weapon.Accuracy - _recoilValue, 0);
@@ -58,6 +94,7 @@ namespace GFA.TPS
 
         private void Update()
         {
+            if (!_weapon) return;
             _recoilValue = Mathf.MoveTowards(_recoilValue, 0, _weapon.RecoilFade * Time.deltaTime);
         }
     }
