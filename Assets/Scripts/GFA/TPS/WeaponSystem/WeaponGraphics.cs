@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -8,5 +9,11 @@ namespace GFA.TPS.WeaponSystem
         [SerializeField]
         private Transform _shootTransform;
         public Transform ShootTransform => _shootTransform;
+        public event Action Shoot;
+
+        public void OnShoot()
+        {
+            Shoot?.Invoke();
+        }
     }
 }

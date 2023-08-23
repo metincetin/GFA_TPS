@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 23f2ad399942c050ba9c55c02a49b2dc, type: 3}
-  m_Name: Revolver
+  m_Name: AssaultRifle
   m_EditorClassIdentifier: 
-  _fireRate: 0.5
-  _accuracy: 0.7
-  _recoil: 0.05
-  _recoilFade: 0.1
+  _fireRate: 0.2
+  _accuracy: 0.9
+  _recoil: 0.1
+  _recoilFade: 0.3
   _projectilePrefab: {fileID: 0}
-  _weaponGraphics: {fileID: 3830672594179798548, guid: 78b1bf8b737cf0573819ce6adf9d305e,
+  _weaponGraphics: {fileID: 8781915695761903233, guid: a322db678af68c826987cc2463c3cf16,
     type: 3}
