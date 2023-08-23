@@ -322,6 +322,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fireRate: 0.5
+  _accuracy: 0.936
+  _recoil: 0.07
+  _recoilFade: 0.5
   _projectilePrefab: {fileID: 6494299921712210955, guid: 84cad12d03575cf86928ceb7c4c2e409,
     type: 3}
   _shootTransform: {fileID: 8130712865395630769}
