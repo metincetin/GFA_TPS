@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f2ad399942c050ba9c55c02a49b2dc, type: 3}
   m_Name: AssaultRifle
   m_EditorClassIdentifier: 
-  _fireRate: 0.2
+  _baseDamage: 0.2
+  _fireRate: 0.15
   _accuracy: 0.9
   _recoil: 0.1
-  _recoilFade: 0.3
+  _recoilFade: 0.5
   _projectilePrefab: {fileID: 0}
   _weaponGraphics: {fileID: 8781915695761903233, guid: a322db678af68c826987cc2463c3cf16,
     type: 3}
