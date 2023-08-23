@@ -9,11 +9,11 @@ namespace GFA.TPS.WeaponSystem
         [SerializeField]
         private Transform _shootTransform;
         public Transform ShootTransform => _shootTransform;
-        public event Action Shoot;
+        public event Action Shot;
 
-        public void OnShoot()
+        public void OnShot()
         {
-            Shoot?.Invoke();
+            Shot?.Invoke();
         }
     }
 }
