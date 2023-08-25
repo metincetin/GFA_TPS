@@ -6,82 +6,85 @@ using Random = UnityEngine.Random;
 
 namespace GFA.TPS.MatchSystem
 {
-    public class EnemySpawner : MonoBehaviour
-    {
+	public class EnemySpawner : MonoBehaviour
+	{
+		private Camera _camera;
 
-        private Camera _camera;
+		private Plane _plane = new Plane(Vector3.up, Vector3.zero);
 
-        private Plane _plane = new Plane(Vector3.up, Vector3.zero);
+		[SerializeField] private MatchInstance _matchInstance;
 
-        [SerializeField]
-        private MatchInstance _matchInstance;
+		[SerializeField] private EnemySpawnData _enemySpawnData;
 
-        [SerializeField]
-        private EnemySpawnData _enemySpawnData;
+		[SerializeField] private float _offset;
 
-        [SerializeField]
-        private float _offset;
+		[SerializeField] private float _spawnRate;
 
-        private void Awake()
-        {
-            _camera = Camera.main;
-        }
+		private void Awake()
+		{
+			_camera = Camera.main;
+		}
 
-        private void Start()
-        {
-            StartCoroutine(CreateEnemy());
-        }
+		private void Start()
+		{
+			StartCoroutine(CreateEnemy());
+		}
 
-        private Vector3 GetSpawnOffsetByViewportPosition(Vector3 vector, float sign)
-        {
-            return vector * sign * _offset;
-        }
+		private Vector3 GetSpawnOffsetByViewportPosition(Vector3 vector, float sign)
+		{
+			return vector * sign * _offset;
+		}
 
-        private GameObject GetSpawnObject()
-        {
-            var time = _matchInstance.Time;
 
-            if (_enemySpawnData.TryGetEntryByTime(time, out SpawnEntry entry))
-            {
-                return entry.Prefabs[Random.Range(0, entry.Prefabs.Length - 1)];
-            }
+		private IEnumerator CreateEnemy()
+		{
+			while (true)
+			{
+				yield return new WaitForSeconds(_spawnRate);
 
-            return null;
-        }
+				if (!_enemySpawnData.TryGetEntryByTime(_matchInstance.Time, out SpawnEntry entry)) continue;
+				var spawnPerCall = ((float)entry.SpawnCount / entry.Duration) * _spawnRate;
+				
+				for (int i = 0; i < spawnPerCall; i++)
+				{
+					var viewportPoint = GetViewportPoint(out var offset);
 
-        private IEnumerator CreateEnemy()
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(0.5f);
-                var viewportPoint = Vector3.zero;
+					var ray = _camera.ViewportPointToRay(viewportPoint);
 
-                var offset = Vector3.zero;
-                
-                if (Random.value > 0.5f)
-                {
-                    var dir = Mathf.Round(Random.value);
-                    viewportPoint = new Vector3(dir, Random.value);
-                    
-                    offset = GetSpawnOffsetByViewportPosition(Vector3.right, dir < 0.001f ? -1f : 1f);
-                }
-                else
-                {
-                    var dir = Mathf.Round(Random.value);
-                    viewportPoint = new Vector3(Random.value, dir);
-                    
-                    offset = GetSpawnOffsetByViewportPosition(Vector3.forward, dir < 0.001f ? -1f : 1f);
-                }
+					if (_plane.Raycast(ray, out float enter))
+					{
+						var objToSpawn = entry.Prefabs[Random.Range(0, entry.Prefabs.Length)];
+							
+						var worldPosition = ray.GetPoint(enter) + offset;
+						var inst = Instantiate(objToSpawn, worldPosition, Quaternion.identity);
+						inst.transform.position = worldPosition;
+					}
+				}
+			}
+		}
 
-                var ray = _camera.ViewportPointToRay(viewportPoint);
+		private Vector3 GetViewportPoint(out Vector3 offset)
+		{
+			var viewportPoint = Vector3.zero;
 
-                if (_plane.Raycast(ray, out float enter))
-                {
-                    var worldPosition = ray.GetPoint(enter) + offset;
-                    var inst = Instantiate(GetSpawnObject(), worldPosition, Quaternion.identity);
-                    inst.transform.position = worldPosition;
-                }
-            }
-        }
-    }
+			offset = Vector3.zero;
+
+			if (Random.value > 0.5f)
+			{
+				var dir = Mathf.Round(Random.value);
+				viewportPoint = new Vector3(dir, Random.value);
+
+				offset = GetSpawnOffsetByViewportPosition(Vector3.right, dir < 0.001f ? -1f : 1f);
+			}
+			else
+			{
+				var dir = Mathf.Round(Random.value);
+				viewportPoint = new Vector3(Random.value, dir);
+
+				offset = GetSpawnOffsetByViewportPosition(Vector3.forward, dir < 0.001f ? -1f : 1f);
+			}
+
+			return viewportPoint;
+		}
+	}
 }
