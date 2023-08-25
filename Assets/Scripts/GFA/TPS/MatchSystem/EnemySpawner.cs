@@ -52,15 +52,14 @@ namespace GFA.TPS.MatchSystem
                     var dir = Mathf.Round(Random.value);
                     viewportPoint = new Vector3(Random.value, dir);
                     
-                    offset = GetSpawnOffsetByViewportPosition(Vector3.up, dir < 0.001f ? -1f : 1f);
+                    offset = GetSpawnOffsetByViewportPosition(Vector3.forward, dir < 0.001f ? -1f : 1f);
                 }
 
-                
                 var ray = _camera.ViewportPointToRay(viewportPoint);
 
                 if (_plane.Raycast(ray, out float enter))
                 {
-                    var worldPosition = ray.GetPoint(enter) - offset;
+                    var worldPosition = ray.GetPoint(enter) + offset;
                     var inst = GameObject.CreatePrimitive(PrimitiveType.Capsule);
                     inst.transform.position = worldPosition;
                 }
