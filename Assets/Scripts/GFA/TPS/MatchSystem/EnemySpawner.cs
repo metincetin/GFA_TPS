@@ -17,6 +17,9 @@ namespace GFA.TPS.MatchSystem
         private MatchInstance _matchInstance;
 
         [SerializeField]
+        private EnemySpawnData _enemySpawnData;
+
+        [SerializeField]
         private float _offset;
 
         private void Awake()
