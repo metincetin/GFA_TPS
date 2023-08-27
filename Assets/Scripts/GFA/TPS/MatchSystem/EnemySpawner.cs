@@ -20,9 +20,39 @@ namespace GFA.TPS.MatchSystem
 
 		[SerializeField] private float _spawnRate;
 
+		private GameObject[] _pooledObjects;
+
+		private int _currentSpawnedObjectIndex;
+
 		private void Awake()
 		{
 			_camera = Camera.main;
+			CreatePoolObjects();
+		}
+
+		private void CreatePoolObjects()
+		{
+			int totalSpawnCount = 0;
+			foreach (var entry in _enemySpawnData.Entries)
+			{
+				totalSpawnCount += entry.SpawnCount;
+			}
+
+			_pooledObjects = new GameObject[totalSpawnCount];
+
+			int currentSpawnedIndex = 0;
+			foreach (var entry in _enemySpawnData.Entries)
+			{
+				for (int i = 0; i < entry.SpawnCount; i++)
+				{
+					var objToSpawn = entry.Prefabs[Random.Range(0, entry.Prefabs.Length)];
+					var inst = Instantiate(objToSpawn, Vector3.zero, Quaternion.identity);
+					inst.SetActive(false);
+					_pooledObjects[currentSpawnedIndex] = inst;
+						
+					currentSpawnedIndex++;
+				}
+			}
 		}
 
 		private void Start()
@@ -44,7 +74,7 @@ namespace GFA.TPS.MatchSystem
 
 				if (!_enemySpawnData.TryGetEntryByTime(_matchInstance.Time, out SpawnEntry entry)) continue;
 				var spawnPerCall = ((float)entry.SpawnCount / entry.Duration) * _spawnRate;
-				
+
 				for (int i = 0; i < spawnPerCall; i++)
 				{
 					var viewportPoint = GetViewportPoint(out var offset);
@@ -53,11 +83,15 @@ namespace GFA.TPS.MatchSystem
 
 					if (_plane.Raycast(ray, out float enter))
 					{
-						var objToSpawn = entry.Prefabs[Random.Range(0, entry.Prefabs.Length)];
-							
 						var worldPosition = ray.GetPoint(enter) + offset;
-						var inst = Instantiate(objToSpawn, worldPosition, Quaternion.identity);
+						var inst = _pooledObjects[_currentSpawnedObjectIndex];
+						
 						inst.transform.position = worldPosition;
+						
+						inst.SetActive(true);
+						
+						
+						_currentSpawnedObjectIndex++;
 					}
 				}
 			}

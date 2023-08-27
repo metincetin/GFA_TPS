@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace GFA.TPS.MatchSystem
@@ -6,6 +7,7 @@ namespace GFA.TPS.MatchSystem
 	public class EnemySpawnData : ScriptableObject
 	{
 		[SerializeField] private SpawnEntry[] _entries;
+		public SpawnEntry[] Entries => _entries;
 
 		public bool TryGetEntryByTime(float time, out SpawnEntry spawnEntry)
 		{
