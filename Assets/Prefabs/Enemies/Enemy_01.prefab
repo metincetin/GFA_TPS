@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3577469826381110267}
   - component: {fileID: 777233125848149942}
   - component: {fileID: 7313938087082909072}
-  - component: {fileID: 682315348887755075}
   - component: {fileID: 8704618869843626839}
   - component: {fileID: 6188407090932345441}
+  - component: {fileID: 8932926503105476689}
   m_Layer: 6
   m_Name: Enemy_01
   m_TagString: Untagged
@@ -76,20 +76,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movementSpeed: 2
---- !u!114 &682315348887755075
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5638350759225546286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e21d7fc39ab5edc43aa75d4aaa90dec8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _acceptanceRadius: 1
-  _matchInstance: {fileID: 11400000, guid: 5241b29c7f38a15dd8a22a389051768c, type: 2}
 --- !u!114 &8704618869843626839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,7 +101,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd37c0bb96e39935ab741f7d0aaf2a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _aiBehaviour: {fileID: 0}
+  _aiBehaviour: {fileID: 11400000, guid: a9615faa803804ef6ae7e8cb1627dc5f, type: 2}
+--- !u!114 &8932926503105476689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5638350759225546286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2401295d96a11e2f981e4ceadd0ec57c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 0.5
+  _range: 2
+  _attackRate: 1
 --- !u!1 &8132105264028164681
 GameObject:
   m_ObjectHideFlags: 0

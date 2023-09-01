@@ -24,7 +24,8 @@ namespace GFA.TPS.MatchSystem
 					return true;
 				}
 
-
+				var x = new SpawnEntry();
+				var y = x;
 			}
 
 			spawnEntry = new SpawnEntry();
@@ -43,6 +44,5 @@ namespace GFA.TPS.MatchSystem
 
 		[SerializeField] private int _spawnCount;
 		public int SpawnCount => _spawnCount;
-
 	}
 }

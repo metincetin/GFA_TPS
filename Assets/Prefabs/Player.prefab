@@ -235,6 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dodgePower: 5
+  _health: 10
 --- !u!114 &772595629482870957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,5 +251,4 @@ MonoBehaviour:
   _weapon: {fileID: 11400000, guid: 1d9d4ddbf1d50bca29b861517d088f3a, type: 2}
   _defaultProjectilePrefab: {fileID: 6494299921712210955, guid: 84cad12d03575cf86928ceb7c4c2e409,
     type: 3}
-  _shootTransform: {fileID: 8130712865395630769}
   _weaponContainer: {fileID: 316947410822607603}

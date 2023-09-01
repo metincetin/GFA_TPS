@@ -35,6 +35,8 @@ namespace GFA.TPS.Movement
 			_characterController.SimpleMove(movement * _movementSpeed + ExternalForces);
 
 			ExternalForces = Vector3.Lerp(ExternalForces,Vector3.zero, 8 * Time.deltaTime);
+
+			MovementInput = Vector2.zero;
 		}
 	}
 }

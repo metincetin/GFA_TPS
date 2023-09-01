@@ -1,3 +1,4 @@
+using GFA.TPS.AI.States;
 using UnityEngine;
 
 namespace GFA.TPS.AI
@@ -20,21 +21,46 @@ namespace GFA.TPS.AI
 
                 if (_aiBehaviour)
                 {
-                    _aiBehaviour.Begin(this);
+                    BeginBehaviour();
                 }
             }
         }
 
+        private AIState _aiState;
+
         private void Awake()
         {
-            if (_aiBehaviour) _aiBehaviour.Begin(this);
+            if (_aiBehaviour)
+            {
+                BeginBehaviour();
+            }
+        }
+
+        private void BeginBehaviour()
+        {
+            _aiState = _aiBehaviour.CreateState();
+            _aiBehaviour.Begin(this);
         }
 
         private void Update()
         {
             if (AIBehaviour)
             {
-                AIBehaviour.Update(this);
+                AIBehaviour.OnUpdate(this);
+            }
+        }
+
+        public bool TryGetState<T>(out T state) where T : AIState
+        {
+            if (_aiState is T casted)
+            {
+                state = casted;
+                return true;
+            }
+            else
+            {
+                state = null;
+                return false;
             }
         }
     }
