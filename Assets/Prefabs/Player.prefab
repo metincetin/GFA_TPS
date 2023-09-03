@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 5217667946796768253}
   - component: {fileID: 772595629482870957}
   - component: {fileID: 3928689409341807893}
+  - component: {fileID: 4812494791377619505}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -235,6 +236,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27b7e12f6fb38ac18b2a23e483df7f31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attributes:
+    _damage: 0
+    _movementSpeed: 5
+    _attackSpeed: 1
+    _defence: 0
   _dodgePower: 5
   _health: 10
 --- !u!114 &772595629482870957
@@ -270,3 +276,15 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 128
+--- !u!114 &4812494791377619505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6904863755826760676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b53733da5f85124b2915c7c9b5eab206, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
