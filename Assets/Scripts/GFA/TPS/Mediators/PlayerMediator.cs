@@ -10,12 +10,24 @@ namespace GFA.TPS.Mediators
 {
 	public class PlayerMediator : MonoBehaviour, IDamageable
 	{
+		[SerializeField] 
+		private Attributes _attributes;
+		public Attributes Attributes => _attributes;
+		
 		private CharacterMovement _characterMovement;
 		private Shooter _shooter;
-
+		private XPCollectableAttractor _xpCollectableAttractor;
+		
 		private GameInput _gameInput;
 
 		[SerializeField] private float _dodgePower;
+
+		private int _level;
+		public int Level => _level;
+		
+		private float _xp;
+		
+		public float MaxXP => (_level + 1) * 5;
 
 		private Plane _plane = new Plane(Vector3.up, Vector3.zero);
 
@@ -23,11 +35,15 @@ namespace GFA.TPS.Mediators
 		
 		[SerializeField]
 		private float _health;
+		
+		public event Action<int> LevelledUp;
 
 		private void Awake()
 		{
 			_characterMovement = GetComponent<CharacterMovement>();
 			_shooter = GetComponent<Shooter>();
+			_xpCollectableAttractor = GetComponent<XPCollectableAttractor>();
+			
 			_gameInput = new GameInput();
 
 			_camera = Camera.main;
@@ -37,13 +53,32 @@ namespace GFA.TPS.Mediators
 		{
 			_gameInput.Enable();
 			_gameInput.Player.Dodge.performed += OnDodgeRequested;
+			_xpCollectableAttractor.XPCollected += OnAttractorXPCollected;
 		}
 
 		private void OnDisable()
 		{
 			_gameInput.Disable();
 			_gameInput.Player.Dodge.performed -= OnDodgeRequested;
+			_xpCollectableAttractor.XPCollected -= OnAttractorXPCollected;
 		}
+
+		private void OnAttractorXPCollected(float xp)
+		{
+			AddXP(xp);
+		}
+
+		private void AddXP(float value)
+		{
+			_xp += value;
+			if (_xp >= MaxXP)
+			{
+				_level++;
+				_xp = 0;
+				LevelledUp?.Invoke(_level);
+			}
+		}
+
 
 		private void OnDodgeRequested(InputAction.CallbackContext obj)
 		{
@@ -52,12 +87,19 @@ namespace GFA.TPS.Mediators
 
 		private void Update()
 		{
+			HandleAttributes();
 			HandleMovement();
-
 			if (_gameInput.Player.Shoot.IsPressed())
 			{
 				_shooter.Shoot();
 			}
+		}
+
+		private void HandleAttributes()
+		{
+			_characterMovement.MovementSpeed = Attributes.MovementSpeed;
+			_shooter.AttackSpeedMultipler = Attributes.AttackSpeed;
+			_shooter.BaseDamage = Attributes.Damage;
 		}
 
 		private void HandleMovement()

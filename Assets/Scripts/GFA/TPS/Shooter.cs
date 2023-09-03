@@ -17,8 +17,11 @@ namespace GFA.TPS
         private float _recoilValue = 0f;
 
         private float _lastShootTime;
-        public bool CanShoot => Time.time > _lastShootTime + _weapon.FireRate;
+        public bool CanShoot => Time.time > _lastShootTime + (_weapon.FireRate / AttackSpeedMultipler);
         
+        public float AttackSpeedMultipler { get; set; } = 1;
+        public float BaseDamage { get; set; }
+
         [SerializeField]
         private GameObject _defaultProjectilePrefab;
         
@@ -131,7 +134,7 @@ namespace GFA.TPS
             
             if (inst.TryGetComponent<ProjectileDamage>(out var projectileDamage))
             {
-                projectileDamage.Damage = _weapon.BaseDamage;
+                projectileDamage.Damage = _weapon.BaseDamage + BaseDamage;
             }
 
             var rand = Random.value;
