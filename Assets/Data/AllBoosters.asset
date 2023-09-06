@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d37ae33f174888823f6413b68b0152, type: 3}
   m_Name: AllBoosters
   m_EditorClassIdentifier: 
+  _boosters:
+  - {fileID: 11400000, guid: 570e5dbf35242a6efb639606d5edf6a9, type: 2}
+  - {fileID: 11400000, guid: 86bf160a9118a118c990eb2dac8222d4, type: 2}
+  - {fileID: 11400000, guid: f306d0e25a675970b95ad07ecd132700, type: 2}
+  - {fileID: 11400000, guid: 9296fea715a9cdccd925c5367781adad, type: 2}

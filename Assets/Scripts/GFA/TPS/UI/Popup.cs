@@ -9,6 +9,10 @@ namespace GFA.TPS.UI
     {
         private Canvas _canvas;
         private GraphicRaycaster _raycaster;
+        
+        [SerializeField]
+        private string _name;
+        public string Name => _name;
 
         private void Awake()
         {

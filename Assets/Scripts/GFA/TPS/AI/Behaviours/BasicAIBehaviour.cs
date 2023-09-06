@@ -34,13 +34,17 @@ namespace GFA.TPS.AI.Behaviours
             var movement = state.CharacterMovement;
 
             var dist = Vector3.Distance(player.transform.position, controller.transform.position);
+            var dir = (player.transform.position - controller.transform.position).normalized;
+            
             if (dist < _acceptanceRadius || !state.Attacker.IsCurrentlyAttacking)
             {
-                var dir = (player.transform.position - controller.transform.position).normalized;
                 
                 movement.MovementInput = new Vector2(dir.x, dir.z);
             }
 
+            var rotation = Quaternion.LookRotation(dir);
+            movement.Rotation = rotation.eulerAngles.y;
+                
             if (dist < state.Attacker.Range)
             {
                 state.Attacker.Attack(state.PlayerDamageable);

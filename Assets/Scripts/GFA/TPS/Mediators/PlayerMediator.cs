@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GFA.TPS.BoosterSystem;
 using GFA.TPS.Input;
 using GFA.TPS.Movement;
+using GFA.TPS.UI;
+using GFA.TPS.UI.Popups;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +20,7 @@ namespace GFA.TPS.Mediators
 		private CharacterMovement _characterMovement;
 		private Shooter _shooter;
 		private XPCollectableAttractor _xpCollectableAttractor;
+		private BoosterContainer _boosterContainer;
 		
 		private GameInput _gameInput;
 
@@ -43,6 +47,7 @@ namespace GFA.TPS.Mediators
 			_characterMovement = GetComponent<CharacterMovement>();
 			_shooter = GetComponent<Shooter>();
 			_xpCollectableAttractor = GetComponent<XPCollectableAttractor>();
+			_boosterContainer = GetComponent<BoosterContainer>();
 			
 			_gameInput = new GameInput();
 
@@ -73,10 +78,22 @@ namespace GFA.TPS.Mediators
 			_xp += value;
 			if (_xp >= MaxXP)
 			{
-				_level++;
-				_xp = 0;
-				LevelledUp?.Invoke(_level);
+				LevelUp();
 			}
+		}
+
+		private void LevelUp()
+		{
+			_level++;
+			_xp = 0;
+			
+			if (PopupChannel.TryGetPopup<BoosterSelectionPopup>(out var popup))
+			{
+				popup.TargetBoosterContainer = _boosterContainer;
+				popup.Open();
+			}
+			
+			LevelledUp?.Invoke(_level);
 		}
 
 
