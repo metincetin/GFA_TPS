@@ -1,3 +1,4 @@
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 namespace GFA.TPS.WeaponSystem
@@ -32,5 +33,13 @@ namespace GFA.TPS.WeaponSystem
         [SerializeField]
         private WeaponGraphics _weaponGraphics;
         public WeaponGraphics WeaponGraphics => _weaponGraphics;
+        
+        [SerializeField]
+        private string _boneSocketName;
+        public string BoneSocketName => _boneSocketName;
+
+        [SerializeField]
+        private RuntimeAnimatorController _controller;
+        public RuntimeAnimatorController Controller => _controller;
     }
 }

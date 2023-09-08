@@ -1,10 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using GFA.TPS.Movement;
+using GFA.TPS.Utils;
 using GFA.TPS.WeaponSystem;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 
 namespace GFA.TPS
@@ -13,6 +17,7 @@ namespace GFA.TPS
     {
         [SerializeField]
         private Weapon _weapon;
+        public Weapon Weapon => _weapon;
         
         private float _recoilValue = 0f;
 
@@ -27,10 +32,12 @@ namespace GFA.TPS
         
         private WeaponGraphics _activeWeaponGraphics;
 
-        [SerializeField]
-        private Transform _weaponContainer;
+        [SerializeField] private BoneSocketContainer _boneSocketContainer;
 
         private static IObjectPool<GameObject> _projectilePool;
+
+        public event Action Shot;
+        public event Action<Weapon> WeaponChanged;
 
         private void Awake()
         {
@@ -96,13 +103,16 @@ namespace GFA.TPS
             {
                 CreateGraphics();
             }
+            
+            WeaponChanged?.Invoke(_weapon);
         }
 
         private void CreateGraphics()
         {
             if (!_weapon) return;
-            var instance = Instantiate(_weapon.WeaponGraphics, _weaponContainer);
+            var instance = Instantiate(_weapon.WeaponGraphics, _boneSocketContainer.GetSocket(_weapon.BoneSocketName), true);
             instance.transform.localPosition = Vector3.zero;
+            instance.transform.localRotation = Quaternion.identity;
             _activeWeaponGraphics = instance;
         }
 
@@ -153,6 +163,7 @@ namespace GFA.TPS
             _recoilValue += _weapon.Recoil;
 
             _activeWeaponGraphics.OnShot();
+            Shot?.Invoke();
         }
 
         private void Update()

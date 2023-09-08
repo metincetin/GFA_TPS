@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GFA.TPS.Animating;
 using GFA.TPS.BoosterSystem;
 using GFA.TPS.Input;
 using GFA.TPS.Movement;
 using GFA.TPS.UI;
 using GFA.TPS.UI.Popups;
+using GFA.TPS.WeaponSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,6 +23,7 @@ namespace GFA.TPS.Mediators
 		private Shooter _shooter;
 		private XPCollectableAttractor _xpCollectableAttractor;
 		private BoosterContainer _boosterContainer;
+		private PlayerAnimation _animation;
 		
 		private GameInput _gameInput;
 
@@ -48,6 +51,7 @@ namespace GFA.TPS.Mediators
 			_shooter = GetComponent<Shooter>();
 			_xpCollectableAttractor = GetComponent<XPCollectableAttractor>();
 			_boosterContainer = GetComponent<BoosterContainer>();
+			_animation = GetComponent<PlayerAnimation>();
 			
 			_gameInput = new GameInput();
 
@@ -59,6 +63,8 @@ namespace GFA.TPS.Mediators
 			_gameInput.Enable();
 			_gameInput.Player.Dodge.performed += OnDodgeRequested;
 			_xpCollectableAttractor.XPCollected += OnAttractorXPCollected;
+			_shooter.Shot += OnShooterShot;
+			_shooter.WeaponChanged += OnShooterWeaponChanged;
 		}
 
 		private void OnDisable()
@@ -66,6 +72,23 @@ namespace GFA.TPS.Mediators
 			_gameInput.Disable();
 			_gameInput.Player.Dodge.performed -= OnDodgeRequested;
 			_xpCollectableAttractor.XPCollected -= OnAttractorXPCollected;
+			_shooter.Shot -= OnShooterShot;
+			_shooter.WeaponChanged -= OnShooterWeaponChanged;
+		}
+
+		private void Start()
+		{
+			_animation.SetAnimationController(_shooter.Weapon.Controller);
+		}
+
+		private void OnShooterWeaponChanged(Weapon weapon)
+		{
+			_animation.SetAnimationController(weapon.Controller);
+		}
+
+		private void OnShooterShot()
+		{
+			_animation.PlayFireAnimation();
 		}
 
 		private void OnAttractorXPCollected(float xp)
@@ -110,6 +133,8 @@ namespace GFA.TPS.Mediators
 			{
 				_shooter.Shoot();
 			}
+
+			_animation.Velocity = _characterMovement.Velocity;
 		}
 
 		private void HandleAttributes()
