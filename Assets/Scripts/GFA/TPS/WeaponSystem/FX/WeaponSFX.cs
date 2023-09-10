@@ -1,3 +1,4 @@
+using GFA.TPS.Audio;
 using UnityEngine;
 
 namespace GFA.TPS.WeaponSystem.FX
@@ -7,12 +8,12 @@ namespace GFA.TPS.WeaponSystem.FX
         [SerializeField]
         private AudioSource _audioSource;
 
-        [SerializeField]
-        private AudioClip _audioClip;
+        [SerializeField] 
+        private SoundCue _cue;
         
         protected override void OnShot()
         {
-            _audioSource.PlayOneShot(_audioClip);
+            _cue.PlayOneShot(_audioSource);
         }
     }
 }

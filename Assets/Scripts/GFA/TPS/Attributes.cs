@@ -36,5 +36,13 @@ namespace GFA.TPS
             get => _defence;
             set => _defence = Mathf.Clamp(value, 0, 0.95f);
         }
+        
+        [SerializeField]
+        private float _maxHealth = 0;
+        public float MaxHealth
+        {
+            get => _maxHealth;
+            set => _maxHealth = value;
+        }
     }
 }

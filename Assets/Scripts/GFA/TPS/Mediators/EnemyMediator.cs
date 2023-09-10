@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using GFA.TPS.AI;
 using GFA.TPS.Animating;
+using GFA.TPS.Audio;
 using UnityEngine;
 
 namespace GFA.TPS.Mediators
@@ -18,12 +19,15 @@ namespace GFA.TPS.Mediators
 
         private AIController _aiController;
 
+        private EnemySFX _sfx;
+
         private void Awake()
         {
             _itemDropper = GetComponent<ItemDropper>();
             _attacker = GetComponent<EnemyAttacker>();
             _enemyAnimation = GetComponent<EnemyAnimation>();
             _aiController = GetComponent<AIController>();
+            _sfx = GetComponent<EnemySFX>();
         }
 
         private void OnEnable()
@@ -39,12 +43,13 @@ namespace GFA.TPS.Mediators
         private void OnAttackerAttacked(IDamageable obj)
         {
             _enemyAnimation.PlayAttackAnimation();
+            _sfx.PlayAttackSFX();
         }
 
         public void ApplyDamage(float damage, GameObject causer = null)
         {
             _health -= damage;
-
+            _sfx.PlayDamagedSFX();
             if (_health <= 0)
             {
                 _enemyAnimation.PlayDeathAnimation();

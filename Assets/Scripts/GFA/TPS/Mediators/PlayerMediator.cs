@@ -40,8 +40,9 @@ namespace GFA.TPS.Mediators
 
 		private Camera _camera;
 		
-		[SerializeField]
+		
 		private float _health;
+		public float Health => _health;
 		
 		public event Action<int> LevelledUp;
 
@@ -78,6 +79,7 @@ namespace GFA.TPS.Mediators
 
 		private void Start()
 		{
+			_health = Attributes.MaxHealth;
 			_animation.SetAnimationController(_shooter.Weapon.Controller);
 		}
 

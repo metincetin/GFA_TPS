@@ -204,8 +204,8 @@ MonoBehaviour:
     _movementSpeed: 5
     _attackSpeed: 1
     _defence: 0
+    _maxHealth: 10
   _dodgePower: 5
-  _health: 10
 --- !u!114 &772595629482870957
 MonoBehaviour:
   m_ObjectHideFlags: 0
