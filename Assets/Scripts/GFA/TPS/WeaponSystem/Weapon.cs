@@ -41,5 +41,9 @@ namespace GFA.TPS.WeaponSystem
         [SerializeField]
         private RuntimeAnimatorController _controller;
         public RuntimeAnimatorController Controller => _controller;
+        
+        [SerializeField]
+        private Sprite _icon;
+        public Sprite Icon => _icon;
     }
 }

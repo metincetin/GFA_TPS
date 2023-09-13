@@ -172,6 +172,7 @@ namespace GFA.TPS.Mediators
 					_characterMovement.Rotation = angle;
 				}
 			}
+			Shader.SetGlobalVector("_PlayerPosition", transform.position);
 		}
 
 		public void ApplyDamage(float damage, GameObject causer = null)

@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   _boneSocketName: RightHandSocket_Pistol
   _controller: {fileID: 9100000, guid: 202c85de9bba68e45bf996d3cb86000d, type: 2}
+  _icon: {fileID: 21300000, guid: ca3acf866a0049865936f9ecfbf475e1, type: 3}
